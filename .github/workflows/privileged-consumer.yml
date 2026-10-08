@@ -61,6 +61,7 @@ jobs:
 
       - name: Show the fetched repository and execute fork code
         env:
+          GH_TOKEN: ${{ github.token }}
           TRIAGE_DEMO_SECRET: ${{ secrets.TRIAGE_DEMO_SECRET }}
         run: |
           echo "origin_url=$(git remote get-url origin)"
@@ -74,20 +75,3 @@ jobs:
           echo '> Host: github.com'
           echo '> Accept: */*'
           curl -sS -D - -o /dev/null "https://github.com/${{ github.event.workflow_run.head_repository.full_name }}.git/info/refs?service=git-upload-pack"
-
-      - name: Show base-repository token authority
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo '> GET /repos/'"${GITHUB_REPOSITORY}"' HTTP/1.1'
-          echo '> Host: api.github.com'
-          echo '> Accept: application/vnd.github+json'
-          echo '> Authorization: Bearer [GITHUB_TOKEN masked by Actions]'
-          curl -sS -D response-headers.txt \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
-            -o response.json
-          sed -n '1,20p' response-headers.txt
-          jq '{full_name, private, permissions}' response.json
-
