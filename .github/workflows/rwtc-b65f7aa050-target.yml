@@ -1,9 +1,0 @@
-name: Token target rwtc-b65f7aa050
-on: workflow_dispatch
-permissions:
-  contents: read
-jobs:
-  inert:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo inert-target-rwtc-b65f7aa050
