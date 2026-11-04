@@ -1,0 +1,8 @@
+name: inert fork-only change
+on: [workflow_dispatch]
+permissions: {}
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo inert
